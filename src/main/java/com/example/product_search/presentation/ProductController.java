@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.product_search.application.ProductService;
 import com.example.product_search.application.dto.CreateProductRequestDto;
 import com.example.product_search.application.dto.ProductResponseDto;
+import com.example.product_search.domain.ProductDocument;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +36,26 @@ public class ProductController {
 	public ResponseEntity<List<ProductResponseDto>> getProducts(@RequestParam(defaultValue = "1") int page,
 		@RequestParam(defaultValue = "10") int size) {
 		List<ProductResponseDto> list = productService.getProducts(page, size);
+		return ResponseEntity.ok(list);
+	}
+
+	@GetMapping("/suggestions")
+	public ResponseEntity<List<String>> getSuggestions(@RequestParam String query) {
+		List<String> list = productService.getSuggestions(query);
+		return ResponseEntity.ok(list);
+	}
+
+	@GetMapping("/search")
+	public ResponseEntity<List<ProductDocument>> searchProducts(@RequestParam String query,
+		@RequestParam(required = false) String category,
+		@RequestParam(defaultValue = "0") double minPrice,
+		@RequestParam(defaultValue = "1000000000") double maxPrice,
+		@RequestParam(defaultValue = "1") int page,
+		@RequestParam(defaultValue = "5") int size) {
+		List<ProductDocument> list = productService.searchProducts(
+			query, category, minPrice, maxPrice, page, size
+		);
+
 		return ResponseEntity.ok(list);
 	}
 

@@ -9,6 +9,9 @@ spring:
       ddl-auto: create
     show-sql: true
 
+  elasticsearch:
+    uris: http://localhost:9200
+
 logging:
   level:
     org.elasticsearch.client: TRACE

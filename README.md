@@ -1,7 +1,5 @@
 # 🔎 Elasticsearch Project
 
----
-
 ## 🎯 프로젝트 목적
 
 패션 상품 데이터를 통합하여 Elasticsearch 기반 검색과 가격 비교 기능을 제공하고,  
@@ -19,8 +17,6 @@
 ---
 
 ## 📌 프로젝트 구현 사항
-
----
 
 ## 1️⃣ 검색 시스템 (Elasticsearch Search Engine)
 
@@ -121,7 +117,7 @@ DB 저장과 ES 인덱싱을 분리하고, Batch + Pipeline 기반 처리 구조
 
 ## 🛠 기술 스택
 
-- Java 17
+- Java 21
 - Spring Boot
 - Spring Data Elasticsearch
 - Kafka

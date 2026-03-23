@@ -42,6 +42,9 @@ public class KafkaConsumerConfig {
 
 		factory.setConsumerFactory(consumerFactory());
 
+		factory.setBatchListener(true);
+		factory.setConcurrency(1);
+
 		return factory;
 	}
 }

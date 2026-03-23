@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.product_search.application.ProductService;
 import com.example.product_search.application.dto.CreateProductRequestDto;
 import com.example.product_search.application.dto.ProductResponseDto;
+import com.example.product_search.application.service.ProductService;
 import com.example.product_search.domain.ProductDocument;
 
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.product_search.application;
+package com.example.product_search.application.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import com.example.product_search.application.dto.CreateProductRequestDto;
 import com.example.product_search.application.dto.ProductResponseDto;
 import com.example.product_search.domain.Product;
 import com.example.product_search.domain.ProductDocument;
-import com.example.product_search.infrastructure.ProductEvent;
+import com.example.product_search.infrastructure.event.ProductEvent;
 import com.example.product_search.infrastructure.repository.ProductDocumentRepository;
 import com.example.product_search.infrastructure.repository.ProductRepository;
 

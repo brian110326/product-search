@@ -7,17 +7,20 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-    show-sql: true
+    show-sql: false
 
   elasticsearch:
     uris: http://localhost:9200
 
   kafka:
+    listener:
+      type: batch
     consumer:
       bootstrap-servers: localhost:9092
+      max-poll-records: 500
     producer:
       bootstrap-servers: localhost:9092
 
 logging:
   level:
-    org.elasticsearch.client: TRACE
+    org.elasticsearch.client: ERROR

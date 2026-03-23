@@ -1,4 +1,4 @@
-package com.example.product_search.infrastructure;
+package com.example.product_search.infrastructure.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

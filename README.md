@@ -1,4 +1,4 @@
-# 🛍️ Elasticsearch Project
+# 🔎 Elasticsearch Project
 
 ---
 

@@ -12,14 +12,16 @@ import org.springframework.data.elasticsearch.core.query.HighlightQuery;
 import org.springframework.data.elasticsearch.core.query.highlight.Highlight;
 import org.springframework.data.elasticsearch.core.query.highlight.HighlightField;
 import org.springframework.data.elasticsearch.core.query.highlight.HighlightParameters;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.example.product_search.application.dto.CreateProductRequestDto;
 import com.example.product_search.application.dto.ProductResponseDto;
 import com.example.product_search.domain.Product;
 import com.example.product_search.domain.ProductDocument;
-import com.example.product_search.infrastructure.ProductDocumentRepository;
-import com.example.product_search.infrastructure.ProductRepository;
+import com.example.product_search.infrastructure.ProductEvent;
+import com.example.product_search.infrastructure.repository.ProductDocumentRepository;
+import com.example.product_search.infrastructure.repository.ProductRepository;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
@@ -37,6 +39,7 @@ public class ProductService {
 	private final ProductRepository productRepository;
 	private final ProductDocumentRepository productDocumentRepository;
 	private final ElasticsearchOperations elasticsearchOperations;
+	private final KafkaTemplate<String, Object> kafkaTemplate;
 
 	@Transactional
 	public ProductResponseDto createProduct(CreateProductRequestDto dto) {
@@ -50,8 +53,8 @@ public class ProductService {
 
 		productRepository.save(product);
 
-		ProductDocument productDocument = new ProductDocument(
-			product.getId().toString(),
+		ProductEvent event = new ProductEvent(
+			product.getId(),
 			product.getName(),
 			product.getDescription(),
 			product.getPrice(),
@@ -59,7 +62,7 @@ public class ProductService {
 			product.getCategory()
 		);
 
-		productDocumentRepository.save(productDocument);
+		kafkaTemplate.send("product-create", event);
 
 		return new ProductResponseDto(
 			product.getId(),
@@ -109,8 +112,21 @@ public class ProductService {
 
 	@Transactional
 	public void deleteProduct(Long id) {
+		Product product = productRepository.findById(id)
+			.orElseThrow(() -> new RuntimeException("상품 없음"));
+
+		ProductEvent event = new ProductEvent(
+			product.getId(),
+			product.getName(),
+			product.getDescription(),
+			product.getPrice(),
+			product.getRating(),
+			product.getCategory()
+		);
+
+		kafkaTemplate.send("product-delete", event);
+
 		productRepository.deleteById(id);
-		productDocumentRepository.deleteById(id.toString());
 	}
 
 	public List<ProductDocument> searchProducts(String query, String category, double minPrice, double maxPrice,
